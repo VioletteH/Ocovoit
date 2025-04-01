@@ -1,0 +1,44 @@
+<%- include ('partials/header.ejs') %>
+
+<div class="page-container">
+    <h1>Liste des utilisateurs</h1>
+
+    <% if (!users) { %>
+    <div id="loading" class="loading">
+        <div class="spinner"></div> Chargement...
+    </div>
+    <% } %>
+
+    <div class="users-table-container">
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+					<th>Adresse</th>
+					<th>Code postal</th>
+					<th>Ville</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Admin</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><%= user.firstname %></td>
+                        <td><%= user.lastname %></td>
+						<td><%= user.address %></td>
+						<td><%= user.zipcode %></td>
+						<td><%= user.city %></td>
+                        <td><%= user.email %></td>
+                        <td><%= user.phone %></td>
+                        <td><%= user.admin %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include ('partials/footer.ejs') %>

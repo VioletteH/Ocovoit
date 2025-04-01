@@ -1,0 +1,77 @@
+services:
+
+  ocovoit-main:
+    container_name: ocovoit-main
+    build:
+      context: ./main 
+      dockerfile: Dockerfile 
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./main:/app
+      - /app/node_modules
+    depends_on:
+      - ocovoit-users-db
+
+  ocovoit-api-users:
+    container_name: ocovoit-api-users
+    build:
+      context: ./api-users
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./api-users:/app
+      - /app/node_modules
+    depends_on:
+      - ocovoit-users-db
+
+  ocovoit-users-db:
+    container_name: ocovoit-users-db
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+    volumes:
+      - ./data/seeding.js:/docker-entrypoint-initdb.d/seeding.js
+      - /data/ocovoit-users-db
+
+  ocovoit-auth:
+    container_name: ocovoit-auth
+    build:
+      context: ./authentication-service 
+      dockerfile: Dockerfile 
+    ports:
+      - "3002:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./authentication-service:/app
+      - /app/node_modules
+    depends_on:
+      - ocovoit-users-db
+
+  # ocovoit-authz:
+  #   container_name: ocovoit-authz
+  #   build:
+  #     context: ./authorization-service 
+  #     dockerfile: Dockerfile 
+  #   ports:
+  #     - "3003:3000"
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - ./authorization-service:/app
+  #     - /app/node_modules
+  #   depends_on:
+  #     - ocovoit-users-db
