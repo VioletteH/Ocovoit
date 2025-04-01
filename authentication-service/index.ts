@@ -27,8 +27,8 @@ app.post('/login', async (req: Request, res: Response) => {
         if (!email || !password) {
             throw new Error("Tous les champs sont obligatoires");
         }
-        console.log(`Making request to: ${apiUsersUrl}/users/${email}`);
-        const response = await axios.get(`${apiUsersUrl}/users/${email}`); 
+        console.log(`Making request to: ${apiUsersUrl}/${email}`);
+        const response = await axios.get(`${apiUsersUrl}/${email}`); 
         console.log("recup response", response);
         const user = response.data;
         console.log('Login attempt for:', user);
@@ -62,7 +62,7 @@ app.post('/register', async (req: Request, res: Response) => {
         }
 
         try {
-            const response = await axios.get(`${apiUsersUrl}/users/${email}`);
+            const response = await axios.get(`${apiUsersUrl}/${email}`);
             if (response.data) {
                 throw new Error("Cet utilisateur existe déjà");
             }

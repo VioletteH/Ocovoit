@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Routes pour récupérer tous les utilisateurs de la DB
-app.get('/users', async (req: Request, res: Response) => { // ICI
+app.get('/', async (req: Request, res: Response) => { 
     try {
         const users = await User.find();
         console.log(users);
@@ -21,7 +21,7 @@ app.get('/users', async (req: Request, res: Response) => { // ICI
     }
 });
 
-app.get('/users/:email', async (req: Request, res: Response): Promise<void> => {
+app.get('/:email', async (req: Request, res: Response): Promise<void> => {
     try {
         const email = req.params.email;
         const user = await User.findOne({ email });  // Recherche un utilisateur par email
@@ -35,7 +35,7 @@ app.get('/users/:email', async (req: Request, res: Response): Promise<void> => {
     }
 });
 
-app.post('/users', async (req: Request, res: Response): Promise<void> => {
+app.post('/', async (req: Request, res: Response): Promise<void> => {
     try {
         const { firstname, lastname, address, zipcode, city, phone, email, password, admin } = req.body;
 
@@ -52,8 +52,6 @@ app.post('/users', async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-
         // Création du nouvel utilisateur
         const newUser = new User({
             firstname,
@@ -63,7 +61,7 @@ app.post('/users', async (req: Request, res: Response): Promise<void> => {
             city,
             phone,
             email,
-            password: hashedPassword,  // Assurez-vous que le mot de passe est déjà haché (le hachage doit être effectué dans le microservice d'authentification)
+            password,  // Assurez-vous que le mot de passe est déjà haché (le hachage doit être effectué dans le microservice d'authentification)
             admin: admin === 'true'  // Assurez-vous que admin est un booléen
         });
 

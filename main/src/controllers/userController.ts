@@ -7,7 +7,7 @@ export default {
 
     displayUsers: async (req: Request, res: Response) => {
         try {
-            const response = await axios.get(`${apiUsersUrl}/users`);
+            const response = await axios.get(`${apiUsersUrl}`);
             const users = response.data;
             console.log(users);
             res.render("users", {users});
@@ -23,7 +23,7 @@ export default {
     displayUser: async (req: Request, res: Response) : Promise<void> => {
       try {
           const {email} = req.params;
-          const response = await axios.get(`${apiUsersUrl}/users/${email}`);
+          const response = await axios.get(`${apiUsersUrl}/${email}`);
           const user = response.data;
           console.log(user);
           if (!user) {

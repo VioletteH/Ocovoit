@@ -20,8 +20,8 @@ export default {
             console.log('DEBUG recuperer la response', response);
             const { token, user } = response.data; 
             console.log('DEBUG recuperer la response.data', response.data);
-            res.cookie('auth_token', token, { httpOnly: true, secure: false, sameSite: 'lax' }); 
-            res.cookie('connected_user', JSON.stringify(user), { httpOnly: true, secure: false, sameSite: 'lax' });
+            res.cookie('auth_token', token); 
+            res.cookie('connected_user', JSON.stringify(user));
             console.log('Redirecting to home...');
             res.render("user", {user});
         } catch (error: any) {
