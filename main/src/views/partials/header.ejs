@@ -13,8 +13,14 @@
 		<nav>
 			<ul>
 				<li><a href="/users">Utilisateurs</a></li>
-				<li><a href="/login">Connexion</a></li>
-				<li><a href="/register">Inscription</a></li>
-			  </ul>
+
+				<% if(!auth_token){ %>
+					<li><a href="/login">Connexion</a></li>
+					<li><a href="/register">Inscription</a></li>
+				<% } %>
+				<% if(auth_token){ %>
+					<li><a href="/logout">Deconnection</a></li>
+				<% } %>
+			</ul>
 		</nav>
 	</header>

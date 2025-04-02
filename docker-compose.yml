@@ -61,17 +61,17 @@ services:
     depends_on:
       - ocovoit-users-db
 
-  # ocovoit-authz:
-  #   container_name: ocovoit-authz
-  #   build:
-  #     context: ./authorization-service 
-  #     dockerfile: Dockerfile 
-  #   ports:
-  #     - "3003:3000"
-  #   env_file:
-  #     - .env
-  #   volumes:
-  #     - ./authorization-service:/app
-  #     - /app/node_modules
-  #   depends_on:
-  #     - ocovoit-users-db
+  ocovoit-authz:
+    container_name: ocovoit-authz
+    build:
+      context: ./authorization-service 
+      dockerfile: Dockerfile 
+    ports:
+      - "3003:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./authorization-service:/app
+      - /app/node_modules
+    depends_on:
+      - ocovoit-users-db

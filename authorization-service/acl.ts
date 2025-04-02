@@ -42,7 +42,7 @@ const routesConfig: RoutesConfig = {
     '/users': {
         'GET': {
             'ADMIN': true,
-            'USER': true
+            'USER': false
         }
     },
 };

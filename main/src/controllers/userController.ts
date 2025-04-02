@@ -9,7 +9,6 @@ export default {
         try {
             const response = await axios.get(`${apiUsersUrl}`);
             const users = response.data;
-            console.log(users);
             res.render("users", {users});
           } catch (error: any) {
             const errorMessage : any = error instanceof Error
@@ -25,7 +24,6 @@ export default {
           const {email} = req.params;
           const response = await axios.get(`${apiUsersUrl}/${email}`);
           const user = response.data;
-          console.log(user);
           if (!user) {
             res.status(404).send('Utilisateur non trouvé');
             return;

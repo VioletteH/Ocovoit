@@ -4,16 +4,17 @@ import jwt from 'jsonwebtoken';
 import axios from 'axios';
 
 const PORT = 3000;
-const jwtSecret = process.env.JWT_SECRET as string; //
+const jwtSecret = process.env.JWT_SECRET as string;
 const apiUsersUrl = process.env.API_USERS_SERVICE_URL as string;
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-function createToken(data: { id: string; email: string }) {
+function createToken(data: { id: string; email: string, admin: boolean }) {
+    const role = data.admin ? "ADMIN" : "USER";
     return jwt.sign(
-        data,
+        {...data, role: role},
         jwtSecret,
         { expiresIn: '1h' }
     );
@@ -22,29 +23,34 @@ function createToken(data: { id: string; email: string }) {
 app.post('/login', async (req: Request, res: Response) => {
     const errorConnexion = "Connexion échouée, veuillez réessayer.";
     try {
+        console.log('DEBUG AUTH jwtSecret', jwtSecret);
+        console.log('DEBUG AUTH req.body', req.body);
+        console.log('DEBUG AUTH req.body email', req.body.email);
         const { email, password } = req.body; 
-        console.log("recup req.body", req.body);
         if (!email || !password) {
             throw new Error("Tous les champs sont obligatoires");
         }
-        console.log(`Making request to: ${apiUsersUrl}/${email}`);
+
         const response = await axios.get(`${apiUsersUrl}/${email}`); 
-        console.log("recup response", response);
+        console.log('DEBUG AUTH response', response);
+
         const user = response.data;
-        console.log('Login attempt for:', user);
+        console.log('DEBUG AUTH user', user);
         if (!user) {
             throw new Error(errorConnexion);
         }
-
+        console.log('DEBUG AUTH: Before bcrypt.compareSync'); // ok
         const match = bcrypt.compareSync(password, user.password);
-        console.log('Password match result:', match);
+        console.log('DEBUG AUTH match', match); // false
         if (!match) {
             throw new Error(errorConnexion);
         }
 
-        const token = createToken({ id: user._id, email })
+        console.log('DEBUG AUTH: Before createToken');
+        const token = createToken({ id: user._id, email: user.email, admin: user.admin })
+        console.log('DEBUG AUTH token', token);
+    
         res.status(201).json({ token, user });
-
     } catch (error) {
         if (error instanceof Error) {
             res.status(401).json({ error: error.message });
@@ -78,7 +84,7 @@ app.post('/register', async (req: Request, res: Response) => {
             throw new Error("Une erreur est survenue lors de l'inscription");
         }
 
-        const token = createToken({ id: createdUser._id, email });
+        const token = createToken({ id: createdUser._id, email: createdUser.email, admin: createdUser.admin });
         res.status(201).json({ token, user: createdUser });
     } catch (error) {
         if (error instanceof Error) {

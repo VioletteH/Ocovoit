@@ -15,15 +15,17 @@ export default {
 
     login: async (req: Request, res: Response) => {
         try {
-            console.log('DEBUG recuperer le body', req.body);
             const response = await axios.post(authUrl + "/login", req.body); 
-            console.log('DEBUG recuperer la response', response);
             const { token, user } = response.data; 
-            console.log('DEBUG recuperer la response.data', response.data);
             res.cookie('auth_token', token); 
             res.cookie('connected_user', JSON.stringify(user));
-            console.log('Redirecting to home...');
-            res.render("user", {user});
+
+            console.log('DEBUG AUTHCONT token', token);
+            console.log('DEBUG AUTHCONT user', user);
+            console.log('DEBUG AUTHCONT cookies', req.cookies);
+            console.log('DEBUG AUTHCONT cookies auth_token', req.cookies.auth_token);
+
+            res.redirect('/');
         } catch (error: any) {
             console.error('Error during login:', error);
             console.log('Error details:', error.response ? error.response.data : error.message);

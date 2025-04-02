@@ -7,7 +7,7 @@ db.users.insertMany([
       city: 'Paris', 
       phone: '01-23-45-67-89', 
       email: 'john.doe@example.com', 
-      password: 'Password123!', 
+      password: bcrypt.hashSync('Password123!', 10),
       admin: false 
     },
     { 
@@ -18,7 +18,7 @@ db.users.insertMany([
       city: 'Lyon', 
       phone: '02-34-56-78-90', 
       email: 'jane.smith@example.com', 
-      password: 'SecurePass1!', 
+      password: bcrypt.hashSync('SecurePass1!', 10),
       admin: true 
     },
     { 
@@ -29,7 +29,7 @@ db.users.insertMany([
       city: 'Marseille', 
       phone: '03-45-67-89-01', 
       email: 'alice.johnson@example.com', 
-      password: 'AlicePass1!', 
+      password: bcrypt.hashSync('AlicePass1!', 10),
       admin: false 
     },
     { 
@@ -39,8 +39,8 @@ db.users.insertMany([
       zipcode: '33000', 
       city: 'Bordeaux', 
       phone: '04-56-78-90-12', 
-      email: 'bob.brown@example.com', 
-      password: 'BobPass1!', 
+      email: 'bob.brown@example.com',
+      password: bcrypt.hashSync('BobPass1!', 10), 
       admin: false 
     }
   ]);
