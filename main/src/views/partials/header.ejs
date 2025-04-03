@@ -12,8 +12,9 @@
 	<header>
 		<nav>
 			<ul>
+				<% if(role_admin === 'ADMIN'){ %>
 				<li><a href="/users">Utilisateurs</a></li>
-
+				<% } %>
 				<% if(!auth_token){ %>
 					<li><a href="/login">Connexion</a></li>
 					<li><a href="/register">Inscription</a></li>

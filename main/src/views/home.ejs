@@ -4,4 +4,34 @@
     <h1>Home page</h1>
 </div>
 
+<div class="page-container">
+    <h1>Liste des trajets</h1>
+    <div class="trips-table-container">
+        <table class="trips-table">
+            <thead>
+                <tr>
+                    <th>Conducteur</th>
+                    <th>Départ</th>
+                    <th>Arrivée</th>
+                    <th>Date</th>
+                    <th>Nombre de sièges disponibles</th>
+                    <th>Baggages acceptés</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% trips.forEach(trip => { %>
+                    <tr>
+                        <td><%= trip.driver_id %></td>
+                        <td><%= trip.departure_id %></td>
+                        <td><%= trip.destination_id %></td>
+                        <td><%= trip.date_time %></td>
+                        <td><%= trip.seats_available %></td>
+                        <td><%= trip.luggage_accepted %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <%- include ('partials/footer.ejs') %>

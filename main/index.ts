@@ -8,8 +8,8 @@ import jwt from 'jsonwebtoken';
 const apiUsersUrl = process.env.API_USERS_SERVICE_URL as string;
 const jwtSecret = process.env.JWT_SECRET as string; 
 
-// import { verifyToken } from './src/middlewares/verifyToken';
-// import { checkAuthorization } from './src/middlewares/checkautorization';
+import { verifyToken } from './src/middlewares/verifyToken';
+import { verifyRole } from './src/middlewares/verifyRole';
 
 const app: Express = express();
 const PORT: number = 3000;
@@ -26,15 +26,26 @@ app.use(cookieParser());
 
 app.use((req, res, next) => {
     res.locals.auth_token = req.cookies?.auth_token;
-    // res.locals.connected_user = req.cookies?.connected_user; // mieux de pas mettre en cookies 
+    console.log('DEBUG INDEX auth_token', req.cookies?.auth_token);
 
-    // const decodedToken: any = jwt.verify(token, jwtSecret); //
-    // const userRole = decodedToken.role; 
-    // const response = await axios.get(`${apiUsersUrl}/${decodedToken.email}`);
-    // const user = response.data;
-    // res.locals.role_admin = decoder le token pour récupérer le role 
+    const token = req.cookies?.auth_token;
+    if (token) {
+        try {
+            const decodedToken: any = jwt.verify(token, jwtSecret);
+            res.locals.role_admin = decodedToken.role;
+            console.log('DEBUG INDEX role_admin', res.locals.role_admin);
+        } catch (error) {
+            console.error('Erreur lors de la vérification du token :', error);
+            res.locals.role_admin = undefined;
+        }
+    } else {
+        res.locals.role_admin = undefined;
+    }
+
     next();
 });
+
+// app.use(verifyToken, verifyRole);
 
 app.use(router);
 

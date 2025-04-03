@@ -26,9 +26,12 @@ BUGS
 - mon seeding n'a pas marché
 
 TODO
-- rendre l'onglet "utilisateurs" visible uniquement aux admis
+- rendre l'onglet "utilisateurs" visible uniquement aux admis OK
+
 - ajouter trajets sur la page d'accueil
 - donner la possibilité à l'admin de modifier ou supprimer un utilisateur
 - ajouter une page "profil" et afficher 
     - les avis en tant que driver
     - les avis en tant que passenger
+
+AdminController > à supprimer

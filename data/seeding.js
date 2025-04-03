@@ -7,7 +7,7 @@ db.users.insertMany([
       city: 'Paris', 
       phone: '01-23-45-67-89', 
       email: 'john.doe@example.com', 
-      password: bcrypt.hashSync('Password123!', 10),
+      password: 'Password123!',
       admin: false 
     },
     { 
@@ -18,7 +18,7 @@ db.users.insertMany([
       city: 'Lyon', 
       phone: '02-34-56-78-90', 
       email: 'jane.smith@example.com', 
-      password: bcrypt.hashSync('SecurePass1!', 10),
+      password: 'SecurePass1!', 
       admin: true 
     },
     { 
@@ -29,7 +29,7 @@ db.users.insertMany([
       city: 'Marseille', 
       phone: '03-45-67-89-01', 
       email: 'alice.johnson@example.com', 
-      password: bcrypt.hashSync('AlicePass1!', 10),
+      password: 'AlicePass1!',
       admin: false 
     },
     { 
@@ -40,7 +40,7 @@ db.users.insertMany([
       city: 'Bordeaux', 
       phone: '04-56-78-90-12', 
       email: 'bob.brown@example.com',
-      password: bcrypt.hashSync('BobPass1!', 10), 
+      password: 'BobPass1!', 
       admin: false 
     }
   ]);
@@ -53,10 +53,10 @@ db.users.insertMany([
   ]);
   
   db.trips.insertMany([
-    { driver_id: 1, departure_id: 1, destination_id: 2, date_time: new Date('2025-06-06T10:00:00Z'), seats_available: 4, luggage_accepted: true },
-    { driver_id: 2, departure_id: 2, destination_id: 1, date_time: new Date('2025-06-07T14:00:00Z'), seats_available: 2, luggage_accepted: false },
-    { driver_id: 3, departure_id: 3, destination_id: 4, date_time: new Date('2025-05-08T09:00:00Z'), seats_available: 3, luggage_accepted: true },
-    { driver_id: 4, departure_id: 4, destination_id: 3, date_time: new Date('2025-05-09T15:00:00Z'), seats_available: 5, luggage_accepted: false }
+    { driver_id: 1, departure_id: 1, destination_id: 2, date_time: ISODate('2025-06-06T10:00:00Z'), seats_available: 4, luggage_accepted: true },
+    { driver_id: 2, departure_id: 2, destination_id: 1, date_time: ISODate('2025-06-07T14:00:00Z'), seats_available: 2, luggage_accepted: false },
+    { driver_id: 3, departure_id: 3, destination_id: 4, date_time: ISODate('2025-05-08T09:00:00Z'), seats_available: 3, luggage_accepted: true },
+    { driver_id: 4, departure_id: 4, destination_id: 3, date_time: ISODate('2025-05-09T15:00:00Z'), seats_available: 5, luggage_accepted: false }
   ]);
   
   db.passengers.insertMany([

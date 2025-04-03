@@ -7,16 +7,16 @@ import userController from "../controllers/userController";
 import authController from "../controllers/authController";
 
 import { verifyToken } from '../middlewares/verifyToken';
-import { isAdmin } from '../middlewares/isAdmin';
-import { checkRouteAuthz } from '../middlewares/checkRouteAuthz';
+import { verifyRole } from '../middlewares/verifyRole';
+import { routeAuthz } from '../middlewares/routeAuthz';
 
 // ROUTER
 const router = express.Router();
 
 // Routes pour accéder aux trajets
 router.get('/', homeController.displayHome);
-router.get('/users', checkRouteAuthz, userController.displayUsers);
-router.get('/users/:email', checkRouteAuthz, userController.displayUser);
+router.get('/users', routeAuthz, userController.displayUsers);
+router.get('/users/:email', routeAuthz, userController.displayUser);
 
 router.get('/login', authController.displayLogin);
 router.post('/login', authController.login);
