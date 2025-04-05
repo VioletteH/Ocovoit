@@ -44,7 +44,26 @@ services:
       - /app/node_modules
     depends_on:
       - ocovoit-db
+  
+  ocovoit-api-stages:
+    container_name: ocovoit-api-stages
+    build:
+      context: ./api-stages
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./api-stages:/app
+      - /app/node_modules
+    depends_on:
+      - ocovoit-db
+    # depends_on:
+    #   ocovoit-db:
+    #     condition: service_healthy
       
+
   ocovoit-db:
     container_name: ocovoit-db
     image: mongo:latest
@@ -67,7 +86,7 @@ services:
       context: ./authentication-service 
       dockerfile: Dockerfile 
     ports:
-      - "3003:3000"
+      - "3004:3000"
     env_file:
       - .env
     volumes:
@@ -82,7 +101,7 @@ services:
       context: ./authorization-service 
       dockerfile: Dockerfile 
     ports:
-      - "3004:3000"
+      - "3005:3000"
     env_file:
       - .env
     volumes:

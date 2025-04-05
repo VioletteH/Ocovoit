@@ -19,12 +19,6 @@ export default {
             const { token, user } = response.data; 
             res.cookie('auth_token', token); 
             res.cookie('connected_user', JSON.stringify(user));
-
-            console.log('DEBUG AUTHCONT token', token);
-            console.log('DEBUG AUTHCONT user', user);
-            console.log('DEBUG AUTHCONT cookies', req.cookies);
-            console.log('DEBUG AUTHCONT cookies auth_token', req.cookies.auth_token);
-
             res.redirect('/');
         } catch (error: any) {
             console.error('Error during login:', error);

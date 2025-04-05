@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.post('/', (req: Request, res: Response, next: NextFunction) => {    
     
-    const { method, path, allowedRoles } = req.body;
+    const { method, path } = req.body;
     const { role } = req.headers;
     const normalizedPath = path.endsWith('/') ? path.slice(0, -1) : path;
     const routeAllowedRoles = routesConfig[normalizedPath]?.[method];
@@ -23,12 +23,6 @@ app.post('/', (req: Request, res: Response, next: NextFunction) => {
         res.status(403).json({ error: 'Accès refusé' });
         return;
     }
-
-    console.log('DEBUG AUTHZ req.body', req.body);
-    console.log('DEBUG AUTHZ req.headers', req.headers);
-    console.log('DEBUG AUTHZ allowedRoles', allowedRoles);
-    console.log('DEBUG AUTHZ role', role);
-    console.log('DEBUG AUTHZ routeAllowedRoles', routeAllowedRoles);
     
     res.status(200).json({ accessGranted: true });
 });

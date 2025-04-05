@@ -1,13 +1,9 @@
 <%- include ('partials/header.ejs') %>
 
 <div class="page-container">
-    <h1>Home page</h1>
-</div>
-
-<div class="page-container">
     <h1>Liste des trajets</h1>
-    <div class="trips-table-container">
-        <table class="trips-table">
+    <div class="table-container">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Conducteur</th>
@@ -19,11 +15,11 @@
                 </tr>
             </thead>
             <tbody>
-                <% trips.forEach(trip => { %>
+                <% modifiedTrips.forEach(trip => { %>
                     <tr>
-                        <td><%= trip.driver_id %></td>
-                        <td><%= trip.departure_id %></td>
-                        <td><%= trip.destination_id %></td>
+                        <td><%= trip.driver %></td>
+                        <td><%= trip.departure_city %></td>
+                        <td><%= trip.destination_city %></td>
                         <td><%= trip.date_time %></td>
                         <td><%= trip.seats_available %></td>
                         <td><%= trip.luggage_accepted %></td>

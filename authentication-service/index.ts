@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
+import Joi from 'joi';
+import passwordValidator from "password-validator";  
 
 const PORT = 3000;
 const jwtSecret = process.env.JWT_SECRET as string;
@@ -23,33 +25,29 @@ function createToken(data: { id: string; email: string, admin: boolean }) {
 app.post('/login', async (req: Request, res: Response) => {
     const errorConnexion = "Connexion échouée, veuillez réessayer.";
     try {
-        console.log('DEBUG AUTH jwtSecret', jwtSecret);
-        console.log('DEBUG AUTH req.body', req.body);
-        console.log('DEBUG AUTH req.body email', req.body.email);
         const { email, password } = req.body; 
+
+        // Vérification des champs requis
         if (!email || !password) {
             throw new Error("Tous les champs sont obligatoires");
         }
 
+        // Vérification de l'email
         const response = await axios.get(`${apiUsersUrl}/${email}`); 
-        console.log('DEBUG AUTH response', response);
-
+        console.log("DEBUG AUTH login response" , response);
         const user = response.data;
-        console.log('DEBUG AUTH user', user);
+        console.log("DEBUG AUTH login user" , user);
         if (!user) {
             throw new Error(errorConnexion);
         }
-        console.log('DEBUG AUTH: Before bcrypt.compareSync'); // ok
+
+        // Vérification de la correspondance entre l'email et le mot de passe
         const match = bcrypt.compareSync(password, user.password);
-        console.log('DEBUG AUTH match', match); // false
         if (!match) {
             throw new Error(errorConnexion);
         }
 
-        console.log('DEBUG AUTH: Before createToken');
         const token = createToken({ id: user._id, email: user.email, admin: user.admin })
-        console.log('DEBUG AUTH token', token);
-    
         res.status(201).json({ token, user });
     } catch (error) {
         if (error instanceof Error) {
@@ -63,20 +61,54 @@ app.post('/login', async (req: Request, res: Response) => {
 app.post('/register', async (req: Request, res: Response) => {
     try {
         const { firstname, lastname, address, zipcode, city, phone, email, password, admin } = req.body;
-        if (!firstname || !lastname || !address || !zipcode || !city || !phone || !email || !password || !admin) {
-            throw new Error("Tous les champs sont obligatoires");
-        }
+        
+        // Vérification des champs requis et des formats (notamment email)
+        const schema = Joi.object({
+            firstname: Joi.string().required(),
+            lastname: Joi.string().required(),
+            address: Joi.string().required(),
+            zipcode: Joi.string().required(),
+            city: Joi.string().required(),
+            phone: Joi.string().required(),
+            email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'fr'] } }).required(),
+            password: Joi.string().required(),
+            admin: Joi.boolean().required(),
+        });
+        const userData = await schema.validateAsync(req.body);
 
-        try {
-            const response = await axios.get(`${apiUsersUrl}/${email}`);
-            if (response.data) {
-                throw new Error("Cet utilisateur existe déjà");
+        // Vérification de la robustesse du mot de passe
+        const schemaPassword = new passwordValidator();
+        schemaPassword
+            .is().min(8, "Votre mdp doit avoir min 8 caractères")
+            .has().uppercase(1, "Votre mdp doit avoir min 1 majuscule")
+            .has().symbols(1, "Votre mdp doit avoir min 1 caractère spécial")
+            .has().digits(1, "Votre mdp doit avoir min 1 chiffre");
+            const passwordErrors: { [key: string]: string[] } = {};
+            const passwordValidationResult = schemaPassword.validate(password, { details: true }) as string[];
+            if (passwordValidationResult.length > 0) {
+                passwordErrors.password = passwordValidationResult; 
             }
-        } catch (error) {
-            console.log(error)
+    
+        // Verification avec un email déjà utilisé
+        try {
+            const user = await axios.get(`${apiUsersUrl}/${email}`);
+            console.log("DEBUG AUTH register user" , user);
+            const userData = user.data;
+            console.log("DEBUG AUTH register userData" , userData);
+            const userEmail = userData.email;
+            console.log("DEBUG AUTH register userEmail" , userEmail);
+            if (userEmail) {
+                throw new Error("Cet email est déjà utilisé.");
+            }
+        } catch (error: any) {
+            res.status(401).json({ error: error.message });
+
         }
 
+        // Hash du mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Envoi de la requête POST à l'API
         const responsePost = await axios.post(apiUsersUrl, { firstname, lastname, address, zipcode, city, phone, email, password : hashedPassword, admin });
         const createdUser = responsePost.data;
 
@@ -84,7 +116,9 @@ app.post('/register', async (req: Request, res: Response) => {
             throw new Error("Une erreur est survenue lors de l'inscription");
         }
 
+        // Création du token
         const token = createToken({ id: createdUser._id, email: createdUser.email, admin: createdUser.admin });
+
         res.status(201).json({ token, user: createdUser });
     } catch (error) {
         if (error instanceof Error) {

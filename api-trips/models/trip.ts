@@ -3,12 +3,9 @@ import db from './db';
 
 const schema = new mongoose.Schema(
     {
-        driver_id: { type: Number, required: true },
-        departure_id: { type: Number, required: true }, 
-        destination_id: { type: Number, required: true }, 
-        // driver_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-        // departure_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-        // destination_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        driver_id: { type: String, required: true },
+        departure_id: { type: String, required: true }, 
+        destination_id: { type: String, required: true }, 
         date_time: { type: Date, required: true },
         seats_available: { type: Number, required: true },
         luggage_accepted: { type: Boolean, required: true },

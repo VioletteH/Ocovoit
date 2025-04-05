@@ -1,8 +1,6 @@
 import express from 'express';
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response } from 'express';
 import User from './models/user';
-import db from './models/db';
-import bcrypt from 'bcrypt';
 
 const PORT = 3000;
 const app = express();
@@ -10,7 +8,6 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Routes pour récupérer tous les utilisateurs de la DB
 app.get('/', async (req: Request, res: Response) => { 
     try {
         const users = await User.find();
@@ -57,12 +54,12 @@ app.post('/', async (req: Request, res: Response): Promise<void> => {
             city,
             phone,
             email,
-            password,  // Assurez-vous que le mot de passe est déjà haché (le hachage doit être effectué dans le microservice d'authentification)
-            admin: admin === 'true'  // Assurez-vous que admin est un booléen
+            password, 
+            admin: admin === 'true'  
         });
 
         const createdUser = await newUser.save();
-        res.status(201).json(createdUser);  // Renvoyer l'utilisateur créé dans la réponse
+        res.status(201).json(createdUser); 
 
     } catch (error) {
         res.status(500).json({ error: "Une erreur est survenue lors de la création de l'utilisateur" });

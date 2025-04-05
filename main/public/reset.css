@@ -6,6 +6,9 @@
   /* 2. Remove default margin */
   * {
     margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
   }
   
   /* 3. Enable keyword animations */

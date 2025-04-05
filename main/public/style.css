@@ -1,41 +1,205 @@
 body {
     font-family: "Roboto", Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    --bg-primary: #007bff; 
+    --bg-secondary: #0056b3;
     height: 100vh;
-    margin: 0;
 }
 
-.auth-card {
+h1 {
+    color: var(--bg-primary);
+    text-align: center;
+    font-size: 2.5em;
+}
+
+.page-container {
+    width: 80%;
+    margin: 40px auto;
+    padding: 20px;
     background-color: #fff;
-    padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.auth-form {
+/* HEADER */
+
+.header {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    text-align: center;
+    background-color: var(--bg-primary);
+}
+
+.logo {
+    text-decoration: none;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+    width: 200px;
+    height: auto;
+    margin: 20px auto;
+}
+
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.navUl {
+    display: flex;
+    list-style: none;
+}
+
+.navbar a {
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: var(--bg-primary);;
+    font-weight: bold;
+}
+
+/* HOME - USERS */
+
+.table-container {
+    padding-top: 20px;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: var(--bg-primary);;
+    color: white;
+    text-align: center;
+}
+
+.table td {
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.table tr:nth-child(even) td {
+    background-color: #f1f1f1;
+}
+
+.table tr:hover td {
+    background-color: #e1e1e1;
+}
+
+@media screen and (max-width: 768px) {
+    .table {
+        width: 100%;
+        display: block;
+    }
+
+    .table th, .table td {
+        display: block;
+        width: 100%;
+        text-align: right;
+        padding-left: 50%;
+    }
+
+    table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+    }
+}
+
+/* LOGIN - REGISTER */
+
+/* Login */
+
+.auth-form.login {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.auth-form-grid {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: flex-start;
+    align-items: center;
+    gap: 20px;
+}
+
+.auth-form-footer {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.item-2fr {
+    grid-column: 1 / 3;  
+    width: 100%;
+}
+
+.large-input {
+    width: 80%;
+    min-width: 200px;
+    max-width: 700px;
+}
+select {
+    padding: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+    height: 2.6rem;
+}
+
+select:focus {
+    border-color: var(--bg-primary);;
+    outline: none;
+}
+
+.required-fields {
+    margin-bottom: 1rem;
+}
+
+/* Login & register */ 
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1rem;
 }
 
 .form-group {
-    padding-top: 0.5rem;
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+    display: flex;    
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+
 } 
 
 label {
-    margin-bottom: 0.5rem;
     font-weight: bold;
     color: #333;
+    width: 130px;
 }
 
-select {
-    padding: 0.3rem;
-    margin-bottom: 1rem;
+input {
+    padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
@@ -44,17 +208,11 @@ select {
     transition: border-color 0.3s ease;
 }
 
-select:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
 button {
-    margin: 1rem;
     padding: 0.75rem;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
+    background-color: var(--bg-primary);;
     color: #fff;
     font-size: 1rem;
     cursor: pointer;
@@ -62,8 +220,31 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: var(--bg-secondary);
 }
+
+.submit-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; 
+    width: 100%;
+}
+
+.submit-button button {
+    width: auto; 
+}
+
+@media (max-width: 800px) {
+    .auth-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .item-2fr {
+        grid-column: span 1;
+    }
+}
+
+/* LOADING - SPINNER */
 
 .loading {
     position: fixed;
@@ -71,17 +252,16 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    background-color: rgba(0, 0, 0, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
     color: white;
     font-size: 24px;
-    display: none; /* Cache le loading au départ */
+    display: none; 
 }
 
-/* Animation de rotation pour le chargement */
 .spinner {
     border: 4px solid rgba(255, 255, 255, 0.3);
     border-top: 4px solid #fff;
