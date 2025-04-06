@@ -21,10 +21,14 @@ export default {
             res.cookie('connected_user', JSON.stringify(user));
             res.redirect('/');
         } catch (error: any) {
-            console.error('Error during login:', error);
-            console.log('Error details:', error.response ? error.response.data : error.message);
-            const errorMessage = error.response?.data?.error || 'Une erreur est survenue lors de la connexion'; 
-            res.status(401).render('auth/login');
+            console.error("AUTH CONT Message d'erreur :", error.message);
+            console.log("AUTH CONT Nom de l'erreur :", error.name); 
+            console.log('AUTH CONT Error:', error);
+            console.log('AUTH CONT Error.response:', error.response);
+            console.log('AUTH CONT Error.response.data:', error.response.data);
+            // const errorMessage = error.response?.data?.error || "Une erreur inconnue s'est produite";
+            // res.status(401).render('auth/login', { error: errorMessage });
+            res.status(401).render('auth/login', { error : error.name});
         } 
     },
 

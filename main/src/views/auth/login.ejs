@@ -23,7 +23,11 @@
             </div>
             
         </form>
-
+        <% if (typeof error !== 'undefined') { %>
+            <div style="color: red;">
+                <p><%= error %></p>
+            </div>
+        <% } %>
         <div class="auth-footer">
             <p>Pas encore de compte ? <a href="/register">S'inscrire</a></p>
         </div>

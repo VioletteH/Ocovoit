@@ -23,38 +23,33 @@ function createToken(data: { id: string; email: string, admin: boolean }) {
 }
 
 app.post('/login', async (req: Request, res: Response) => {
-    const errorConnexion = "Connexion échouée, veuillez réessayer.";
     try {
         const { email, password } = req.body; 
 
         // Vérification des champs requis
         if (!email || !password) {
-            throw new Error("Tous les champs sont obligatoires");
+            throw new Error("AUTH SERVICE Tous les champs sont obligatoires");
         }
 
-        // Vérification de l'email
+        // Vérification si l'email est existant
         const response = await axios.get(`${apiUsersUrl}/${email}`); 
-        console.log("DEBUG AUTH login response" , response);
         const user = response.data;
-        console.log("DEBUG AUTH login user" , user);
         if (!user) {
-            throw new Error(errorConnexion);
+            throw new Error("AUTH SERVICE Cet email n'existe pas");
         }
 
         // Vérification de la correspondance entre l'email et le mot de passe
         const match = bcrypt.compareSync(password, user.password);
         if (!match) {
-            throw new Error(errorConnexion);
+            throw new Error("AUTH SERVICE L'email et le mot de passe ne correspondent pas");
         }
 
         const token = createToken({ id: user._id, email: user.email, admin: user.admin })
         res.status(201).json({ token, user });
-    } catch (error) {
-        if (error instanceof Error) {
-            res.status(401).json({ error: error.message });
-        } else {
-            res.status(500).json({ error: errorConnexion });
-        }
+    } catch (error: any) {
+        console.log("AUTH SERVICE Message d'erreur :", error.message); // Affiche le message d'erreur
+        console.log("AUTH SERVICE Nom de l'erreur :", error.name); // Affiche le nom de l'erreur
+        res.status(401).json({ error: error.message });
     }
 });
 
@@ -74,7 +69,7 @@ app.post('/register', async (req: Request, res: Response) => {
             password: Joi.string().required(),
             admin: Joi.boolean().required(),
         });
-        const userData = await schema.validateAsync(req.body);
+        await schema.validateAsync(req.body);
 
         // Vérification de la robustesse du mot de passe
         const schemaPassword = new passwordValidator();
@@ -83,11 +78,11 @@ app.post('/register', async (req: Request, res: Response) => {
             .has().uppercase(1, "Votre mdp doit avoir min 1 majuscule")
             .has().symbols(1, "Votre mdp doit avoir min 1 caractère spécial")
             .has().digits(1, "Votre mdp doit avoir min 1 chiffre");
-            const passwordErrors: { [key: string]: string[] } = {};
-            const passwordValidationResult = schemaPassword.validate(password, { details: true }) as string[];
-            if (passwordValidationResult.length > 0) {
-                passwordErrors.password = passwordValidationResult; 
-            }
+        const passwordErrors: { [key: string]: string[] } = {};
+        const passwordValidationResult = schemaPassword.validate(password, { details: true }) as string[];
+        if (passwordValidationResult.length > 0) {
+            passwordErrors.password = passwordValidationResult; 
+        }
     
         // Verification avec un email déjà utilisé
         try {
@@ -95,13 +90,11 @@ app.post('/register', async (req: Request, res: Response) => {
             console.log("DEBUG AUTH register user" , user);
             const userData = user.data;
             console.log("DEBUG AUTH register userData" , userData);
-            const userEmail = userData.email;
-            console.log("DEBUG AUTH register userEmail" , userEmail);
-            if (userEmail) {
+            if (userData) {
                 throw new Error("Cet email est déjà utilisé.");
             }
         } catch (error: any) {
-            res.status(401).json({ error: error.message });
+            console.log(error);
 
         }
 

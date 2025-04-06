@@ -127,4 +127,4 @@ Création de tests fonctionnels avec Jest sur le service d'authentification
 TODO
 - finir test > check email existant login et register
 - reformater date trips
-- check hash de mdp dans la BDD
+- check hash de mdp dans la BDD > hashé uniquement pour les nouveaux
