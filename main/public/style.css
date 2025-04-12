@@ -123,8 +123,6 @@ h1 {
 
 /* LOGIN - REGISTER */
 
-/* Login */
-
 .auth-form.login {
     padding: 20px;
     display: flex;
@@ -142,48 +140,6 @@ h1 {
     gap: 20px;
 }
 
-.auth-form-footer {
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-.item-2fr {
-    grid-column: 1 / 3;  
-    width: 100%;
-}
-
-.large-input {
-    width: 80%;
-    min-width: 200px;
-    max-width: 700px;
-}
-select {
-    padding: 0.3rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    color: #333;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
-    height: 2.6rem;
-}
-
-select:focus {
-    border-color: var(--bg-primary);;
-    outline: none;
-}
-
-.required-fields {
-    margin-bottom: 1rem;
-}
-
-/* Login & register */ 
-
-.auth-footer {
-    text-align: center;
-    margin-top: 1rem;
-}
-
 .form-group {
     display: flex;    
     justify-content: flex-start;
@@ -191,6 +147,11 @@ select:focus {
     position: relative;
 
 } 
+
+.item-2fr {
+    grid-column: 1 / 3;  
+    width: 100%;
+}
 
 label {
     font-weight: bold;
@@ -206,6 +167,28 @@ input {
     color: #333;
     background-color: #f9f9f9;
     transition: border-color 0.3s ease;
+}
+
+.large-input {
+    width: 80%;
+    min-width: 200px;
+    max-width: 700px;
+}
+
+select {
+    padding: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+    height: 2.6rem;
+}
+
+select:focus {
+    border-color: var(--bg-primary);;
+    outline: none;
 }
 
 button {
@@ -232,6 +215,24 @@ button:hover {
 
 .submit-button button {
     width: auto; 
+}
+
+.required-fields {
+    margin-bottom: 1rem;
+}
+
+.error{
+    text-align: center;
+}
+
+.auth-form-footer {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1rem;
 }
 
 @media (max-width: 800px) {

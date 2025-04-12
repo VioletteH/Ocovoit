@@ -61,12 +61,21 @@
             </div>
             
             <div class="auth-form-footer">
-                <div class="required-fields">Les champs sont obligatoires</div>
+                <div class="required-fields">Tous les champs sont obligatoires</div>
                 <button class="register-btn" type="submit">S'inscrire</button>
             </div>
             
         </form>
 
+        <% if (typeof error !== 'undefined') { %>
+            <div class="error" style="color: red;">
+                <p><%= error %></p>
+            </div>
+        <% } %>
+        <div class="auth-footer">
+            <p>Pas encore de compte ? <a href="/register">S'inscrire</a></p>
+        </div>
+        
         <div class="auth-footer">
             <p>Déjà un compte ? <a href="/login">Se connecter</a></p>
         </div>

@@ -55,7 +55,7 @@ app.post('/', async (req: Request, res: Response): Promise<void> => {
             phone,
             email,
             password, 
-            admin: admin === 'true'  
+            admin 
         });
 
         const createdUser = await newUser.save();

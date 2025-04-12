@@ -54,9 +54,17 @@ export default {
                 const driver = users.find(user => (user._id === trip.driver_id)); 
                 const departure = stages.find(stage => (stage._id === trip.departure_id));
                 const destination = stages.find(stage => (stage._id === trip.destination_id));
-                
-                const date = typeof trips[0].date_time;;
-                console.log("DEBUG HOME CONT date", date);
+
+                // const date = trips.date_time.map(date => {
+                //     new Date(dateISO);
+                //     const jour = String(date.getDate()).padStart(2, '0');
+                //     const mois = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
+                //     const annee = date.getFullYear();
+                //     const heures = String(date.getHours()).padStart(2, '0');
+                //     const minutes = String(date.getMinutes()).padStart(2, '0');
+                //     return `${jour}-${mois}-${annee} ${heures}:${minutes}`;
+                // });
+                // const date = typeof trips[0].date_time; // string
 
                 return {
                     trip_id: trip._id,
@@ -79,3 +87,4 @@ export default {
         }
     },
 }
+
