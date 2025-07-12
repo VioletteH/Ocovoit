@@ -4,7 +4,7 @@ const ObjectId = mongoose.Types.ObjectId;
 import User from '../api-users/models/user'; 
 import Stage from '../api-stages/models/stage';
 import Trip from '../api-trips/models/trip'; 
-import Passenger from '../api-trips/models/passenger'; 
+import Booking from '../api-trips/models/booking'; 
 import Review from '../api-trips/models/review'; 
 
 const user1Id = new ObjectId();
@@ -48,7 +48,7 @@ export const seed = async () => {
     ]);
 
     // Insérer les passagers
-    await Passenger.insertMany([
+    await Booking.insertMany([
       { user_id: user2Id, trip_id: trip1Id },
       { user_id: user1Id, trip_id: trip2Id },
       { user_id: user3Id, trip_id: trip3Id },

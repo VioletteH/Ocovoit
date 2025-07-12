@@ -20,6 +20,8 @@ app.get('/', async (req: Request, res: Response) => {
                 date_time: trip.date_time,
                 seats_available: trip.seats_available,
                 luggage_accepted: trip.luggage_accepted,
+                price_per_seat: trip.price_per_seat,
+                trip_status: trip.trip_status,
             };
         });
         res.status(200).json(tripsData);

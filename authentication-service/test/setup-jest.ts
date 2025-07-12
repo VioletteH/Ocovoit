@@ -9,7 +9,7 @@ beforeAll(async () => {
 
     await mongoose.connect(uri, {
         useUnifiedTopology: true,
-    } as mongoose.ConnectOptions); // Cast pour éviter les erreurs de typage
+    } as mongoose.ConnectOptions); 
 }, 100000);
 
 afterAll(async () => {

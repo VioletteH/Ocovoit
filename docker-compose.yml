@@ -58,11 +58,7 @@ services:
       - ./api-stages:/app
       - /app/node_modules
     depends_on:
-      - ocovoit-db
-    # depends_on:
-    #   ocovoit-db:
-    #     condition: service_healthy
-      
+      - ocovoit-db    
 
   ocovoit-db:
     container_name: ocovoit-db

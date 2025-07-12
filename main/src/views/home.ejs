@@ -12,6 +12,8 @@
                     <th>Date</th>
                     <th>Nombre de sièges disponibles</th>
                     <th>Baggages acceptés</th>
+                    <th>Prix par siège</th>
+                    <th>Statut</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,6 +25,8 @@
                         <td><%= trip.date_time %></td>
                         <td><%= trip.seats_available %></td>
                         <td><%= trip.luggage_accepted %></td>
+                        <td><%= trip.price_per_seat %> €</td>
+                        <td><%= trip.trip_status %></td>
                     </tr>
                 <% }); %>
             </tbody>

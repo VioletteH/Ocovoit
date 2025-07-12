@@ -20,9 +20,11 @@ interface Trip {
     driver_id: string;
     departure_id: string;
     destination_id: string;
-    date_time: Date;
+    date_time: string;
     seats_available: number;
     luggage_accepted: boolean;
+    price_per_seat: number;
+    trip_status: string;
 }
 
 interface ModifiedTrip {
@@ -33,6 +35,8 @@ interface ModifiedTrip {
     date_time: Date;
     seats_available: number;
     luggage_accepted: boolean;
+    price_per_seat?: number;
+    trip_status?: string;
 }
 
 export default {
@@ -55,25 +59,32 @@ export default {
                 const departure = stages.find(stage => (stage._id === trip.departure_id));
                 const destination = stages.find(stage => (stage._id === trip.destination_id));
 
-                // const date = trips.date_time.map(date => {
-                //     new Date(dateISO);
-                //     const jour = String(date.getDate()).padStart(2, '0');
-                //     const mois = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
-                //     const annee = date.getFullYear();
-                //     const heures = String(date.getHours()).padStart(2, '0');
-                //     const minutes = String(date.getMinutes()).padStart(2, '0');
-                //     return `${jour}-${mois}-${annee} ${heures}:${minutes}`;
-                // });
-                // const date = typeof trips[0].date_time; // string
+                let formattedDateTime: string | null = null;
+                if (trip.date_time) {
+                    try {
+                        const dateObj = new Date(trip.date_time); 
+                        const jour = String(dateObj.getDate()).padStart(2, '0');
+                        const mois = String(dateObj.getMonth() + 1).padStart(2, '0'); 
+                        const annee = dateObj.getFullYear();
+                        const heures = String(dateObj.getHours()).padStart(2, '0');
+                        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+                        formattedDateTime = `${jour}/${mois}/${annee} - ${heures}:${minutes}`;
+                    } catch (e) {
+                        console.error(`Erreur de conversion de date pour: ${trip.date_time}`, e);
+                        formattedDateTime = "Date invalide";
+                    }
+                }
 
                 return {
                     trip_id: trip._id,
                     driver: driver ? driver.firstname : null,
                     departure_city: departure ? departure.city : null,
                     destination_city: destination ? destination.city : null,
-                    date_time: trip.date_time,
+                    date_time: formattedDateTime,
                     seats_available: trip.seats_available,
                     luggage_accepted: trip.luggage_accepted,
+                    price_per_seat: trip.price_per_seat,
+                    trip_status: trip.trip_status,
                 };
             });
 

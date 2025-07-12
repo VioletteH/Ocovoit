@@ -126,5 +126,4 @@ Création de tests fonctionnels avec Jest sur le service d'authentification
 
 TODO
 - faire les tests (check fichier + compléter)
-- reformater date trips + boolean
 - check hash de mdp dans la BDD > hashé uniquement pour les nouveaux > est ce que je met un format hashé dans la BDD?

@@ -54,8 +54,9 @@ app.post('/login', async (req: Request, res: Response) => {
 
 app.post('/register', async (req: Request, res: Response) => {
     try {
-        const { firstname, lastname, address, zipcode, city, phone, email, password, admin } = req.body;
-
+        const { firstname, lastname, address, zipcode, city, phone, email, password } = req.body;
+        const admin = req.body.admin === true || req.body.admin === 'true';; 
+        
         // Vérification des champs requis et des formats (notamment email)
         const schema = Joi.object({
             firstname: Joi.string().required(),
@@ -74,26 +75,43 @@ app.post('/register', async (req: Request, res: Response) => {
         });
         await schema.validateAsync(req.body);
 
-        // Vérification avec un email déjà utilisé
-        // sans try catch > pas de cookies
+        // Vérification si l'email est déjà utilisé
+        let userExists = false;
         try {
-            const user = await axios.get(`${apiUsersUrl}/${email}`);
-            console.log("Réponse de l'API pour vérification de l'email :", user.data);
-            if (user.data) {
-                res.status(409).json({ error: "Cet email est déjà utilisé." }); 
-                return;
+            const userResponse = await axios.get(`${apiUsersUrl}/${email}`);
+            if (userResponse.data) {
+                userExists = true;
             }
         } catch (error: any) {
-                console.log("AUTH SERVICE erreur lors de la vérification de l'email :", error.message);
-                res.status(500).json({ error: "Erreur lors de la vérification de l'email." }); 
+            if (error.response && error.response.status === 404) {
+                userExists = false;
+            } else {
+                console.error("Erreur lors de la vérification de l'email :", error.message);
+                res.status(500).json({ error: "Une erreur inattendue s'est produite lors de la vérification de l'email." });
                 return;
+            }
+        }
+
+        if (userExists) {
+            res.status(409).json({ error: "Cet email est déjà utilisé." });
+            return;
         };
 
         // Hash du mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Envoi de la requête POST à l'API
-        const responsePost = await axios.post(apiUsersUrl, { firstname, lastname, address, zipcode, city, phone, email, password : hashedPassword, admin });
+        const responsePost = await axios.post(apiUsersUrl, { 
+            firstname, 
+            lastname, 
+            address, 
+            zipcode, 
+            city,
+            phone, 
+            email, 
+            password : hashedPassword, 
+            admin
+        });
         const createdUser = responsePost.data;
 
         if (!createdUser) {
@@ -106,8 +124,6 @@ app.post('/register', async (req: Request, res: Response) => {
         res.status(201).json({ token, user: createdUser });
 
     } catch (error: any) {
-        console.log("DEBUG AUTH register error" , error);
-        console.log("DEBUG AUTH register error.message" , error.message);
         if (error.isJoi) {
             res.status(400).json({ error: error.details[0].message });
         } else {

@@ -28,22 +28,22 @@ db.stages.insertMany([
 ]);
 
 db.trips.insertMany([
-  { _id: trip1Id, driver_id: user1Id, departure_id: stage1Id, destination_id: stage2Id, date_time: ISODate('2025-06-06T10:00:00Z'), seats_available: 4, luggage_accepted: true },
-  { _id: trip2Id, driver_id: user2Id, departure_id: stage2Id, destination_id: stage1Id, date_time: ISODate('2025-06-07T14:00:00Z'), seats_available: 2, luggage_accepted: false },
-  { _id: trip3Id, driver_id: user3Id, departure_id: stage3Id, destination_id: stage4Id, date_time: ISODate('2025-05-08T09:00:00Z'), seats_available: 3, luggage_accepted: true },
-  { _id: trip4Id, driver_id: user4Id, departure_id: stage4Id, destination_id: stage3Id, date_time: ISODate('2025-05-09T15:00:00Z'), seats_available: 5, luggage_accepted: false }
+  { _id: trip1Id, driver_id: user1Id, departure_id: stage1Id, destination_id: stage2Id, date_time: ISODate('2025-06-06T10:00:00Z'), seats_available: 4, luggage_accepted: true, price_per_seat: 10, trip_status: 'programmé' },
+  { _id: trip2Id, driver_id: user2Id, departure_id: stage2Id, destination_id: stage1Id, date_time: ISODate('2025-06-07T14:00:00Z'), seats_available: 2, luggage_accepted: false, price_per_seat: 15, trip_status: 'complet' },
+  { _id: trip3Id, driver_id: user3Id, departure_id: stage3Id, destination_id: stage4Id, date_time: ISODate('2025-05-08T09:00:00Z'), seats_available: 3, luggage_accepted: true, price_per_seat: 20, trip_status: 'en cours' },
+  { _id: trip4Id, driver_id: user4Id, departure_id: stage4Id, destination_id: stage3Id, date_time: ISODate('2025-05-09T15:00:00Z'), seats_available: 5, luggage_accepted: false, price_per_seat: 12, trip_status: 'programmé' }
 ]);
 
-db.passengers.insertMany([
-  { user_id: user2Id, trip_id: trip1Id },
-  { user_id: user1Id, trip_id: trip2Id },
-  { user_id: user3Id, trip_id: trip3Id },
-  { user_id: user4Id, trip_id: trip4Id }
+db.bookings.insertMany([
+  { user_id: user2Id, trip_id: trip1Id, seats_booked: 1, booking_status: 'confirmé' },
+  { user_id: user1Id, trip_id: trip2Id, seats_booked: 2, booking_status: 'confirmé' },
+  { user_id: user3Id, trip_id: trip3Id, seats_booked: 1, booking_status: 'en attente' },
+  { user_id: user4Id, trip_id: trip4Id, seats_booked: 1, booking_status: 'confirmé' }
 ]);
 
 db.reviews.insertMany([
-  { content: 'Great journey!', rating: 5, user_id: user1Id, trip_id: trip1Id },
-  { content: 'Could be better.', rating: 3, user_id: user2Id, trip_id: trip2Id },
-  { content: 'Very comfortable ride.', rating: 4, user_id: user3Id, trip_id: trip3Id },
-  { content: 'Excellent service!', rating: 5, user_id: user4Id, trip_id: trip4Id }
+  { rating: 5, comment: 'Great journey!', user_id: user1Id, trip_id: trip1Id },
+  { rating: 3, comment: 'Could be better.', user_id: user2Id, trip_id: trip2Id },
+  { rating: 4, comment: 'Very comfortable ride.', user_id: user3Id, trip_id: trip3Id },
+  { rating: 5, comment: 'Excellent service!', user_id: user4Id, trip_id: trip4Id }
 ]);
