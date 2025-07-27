@@ -75,7 +75,7 @@ api-trips
 - get('/') : trouver les trajets et les retourner
 
 api-stages
-- get('/'), get('/:id') : trouver les étapes ou une étape en focntion de la route et les retourner
+- get('/'), get('/:id') : trouver les étapes ou une étape en fonction de la route et les retourner
 
 authentication-service
 - post('/login'), post('/register') : récupère les infos de req.body, hash le password ou le vérifie, crée un token
